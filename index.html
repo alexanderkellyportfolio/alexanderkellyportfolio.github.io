@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alexander Kelly - Mechanical Engineer</title>
+    <meta name="description" content="Alexander Kelly - Mechanical Engineering portfolio featuring robotics, CAD design, and hands-on fabrication projects">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --text-primary: #1d1d1f;
+            --text-secondary: #6e6e73;
+            --background: #fbfbfd;
+            --card-bg: #ffffff;
+            --accent: #0071e3;
+            --accent-hover: #0077ed;
+            --border: #d2d2d7;
+            --overlay: rgba(0, 0, 0, 0.75);
+            --shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            --shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.12);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', 'Helvetica Neue', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background: var(--background);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 85vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 80px 0 60px;
+        }
+
+        .hero-content {
+            opacity: 0;
+            animation: fadeInUp 0.8s ease-out 0.2s forwards;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .profile-image {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 28px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border: 3px solid var(--card-bg);
+        }
+
+        h1 {
+            font-size: 52px;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            margin-bottom: 8px;
+            line-height: 1.1;
+        }
+
+        .subtitle {
+            font-size: 21px;
+            color: var(--text-secondary);
+            font-weight: 400;
+            margin-bottom: 24px;
+        }
+
+        .hero-description {
+            font-size: 17px;
+            color: var(--text-secondary);
+            max-width: 580px;
+            margin: 0 auto 32px;
+            line-height: 1.6;
+        }
+
+        .contact-links {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .contact-link {
+            color: var(--accent);
+            text-decoration: none;
+            font-size: 17px;
+            font-weight: 500;
+            padding: 10px 20px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .contact-link:hover {
+            background: rgba(0, 113, 227, 0.08);
+        }
+
+        /* Projects Section */
+        .projects {
+            padding: 60px 0 100px;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-title {
+            font-size: 40px;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            margin-bottom: 12px;
+        }
+
+        .section-subtitle {
+            font-size: 19px;
+            color: var(--text-secondary);
+        }
+
+        /* Project Grid */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 32px;
+            margin-bottom: 40px;
+        }
+
+        /* Project Card */
+        .project-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            opacity: 0;
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+        .project-card:nth-child(1) { animation-delay: 0.1s; }
+        .project-card:nth-child(2) { animation-delay: 0.2s; }
+        .project-card:nth-child(3) { animation-delay: 0.3s; }
+        .project-card:nth-child(4) { animation-delay: 0.4s; }
+
+        .project-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .project-card-image {
+            width: 100%;
+            height: 240px;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .project-card:hover .project-card-image {
+            transform: scale(1.05);
+        }
+
+        .project-card-content {
+            padding: 24px;
+        }
+
+        .project-card-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            letter-spacing: -0.01em;
+        }
+
+        .project-card-role {
+            font-size: 15px;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+        }
+
+        .project-card-excerpt {
+            font-size: 16px;
+            line-height: 1.5;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+
+        .view-project {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--accent);
+            font-size: 15px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: gap 0.3s ease;
+        }
+
+        .project-card:hover .view-project {
+            gap: 10px;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background: var(--overlay);
+            backdrop-filter: blur(8px);
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            border-radius: 20px;
+            max-width: 900px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .modal-close {
+            position: sticky;
+            top: 20px;
+            right: 20px;
+            float: right;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.05);
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            z-index: 10;
+            margin: 20px 20px 0 0;
+        }
+
+        .modal-close:hover {
+            background: rgba(0, 0, 0, 0.1);
+            transform: rotate(90deg);
+        }
+
+        .modal-image {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+        }
+
+        .modal-body {
+            padding: 40px;
+        }
+
+        .modal-title {
+            font-size: 36px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            letter-spacing: -0.02em;
+        }
+
+        .modal-role {
+            font-size: 17px;
+            color: var(--text-secondary);
+            margin-bottom: 28px;
+        }
+
+        .modal-section {
+            margin-bottom: 32px;
+        }
+
+        .modal-section h3 {
+            font-size: 21px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .modal-section p {
+            font-size: 17px;
+            line-height: 1.7;
+            color: var(--text-primary);
+        }
+
+        .modal-section ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .modal-section li {
+            font-size: 17px;
+            line-height: 1.8;
+            padding-left: 24px;
+            position: relative;
+            margin-bottom: 8px;
+        }
+
+        .modal-section li:before {
+            content: "•";
+            position: absolute;
+            left: 8px;
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        .skills-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 16px;
+        }
+
+        .skill-tag {
+            padding: 8px 16px;
+            background: rgba(0, 113, 227, 0.08);
+            border-radius: 20px;
+            font-size: 14px;
+            color: var(--accent);
+            font-weight: 500;
+        }
+
+        /* Footer */
+        footer {
+            padding: 60px 0;
+            text-align: center;
+            border-top: 1px solid var(--border);
+        }
+
+        footer p {
+            color: var(--text-secondary);
+            font-size: 15px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 40px;
+            }
+
+            .subtitle {
+                font-size: 19px;
+            }
+
+            .hero-description {
+                font-size: 16px;
+            }
+
+            .section-title {
+                font-size: 32px;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+
+            .modal-body {
+                padding: 32px 24px;
+            }
+
+            .modal-title {
+                font-size: 28px;
+            }
+
+            .modal-image {
+                height: 280px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 32px;
+            }
+
+            .profile-image {
+                width: 120px;
+                height: 120px;
+            }
+
+            .contact-links {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .project-card-image {
+                height: 200px;
+            }
+        }
+
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Custom scrollbar for modal */
+        .modal-content::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .modal-content::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .modal-content::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 4px;
+        }
+
+        .modal-content::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 0, 0, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <img src="profile-placeholder.jpg" alt="Alexander Kelly" class="profile-image" id="profileImage">
+                <h1>Alexander Kelly</h1>
+                <p class="subtitle">Mechanical Engineer</p>
+                <p class="hero-description">
+                    Senior at UT Austin specializing in design, fabrication, and hands-on engineering. 
+                    Passionate about bringing ideas from concept to competition-ready reality.
+                </p>
+                <div class="contact-links">
+                    <a href="mailto:alexandermkelly@utexas.edu" class="contact-link">Email</a>
+                    <a href="https://www.linkedin.com/in/alexander-m-kelly" class="contact-link" target="_blank">LinkedIn</a>
+                    <a href="resume.pdf" class="contact-link" target="_blank">Resume</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section class="projects">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Featured Projects</h2>
+                <p class="section-subtitle">Click any project to see full details</p>
+            </div>
+
+            <div class="projects-grid">
+                <!-- Project Card 1: BattleBot -->
+                <div class="project-card" onclick="openModal('modal1')">
+                    <img src="battlebot-placeholder.jpg" alt="SXSW BattleBot IQ" class="project-card-image">
+                    <div class="project-card-content">
+                        <h3 class="project-card-title">SXSW BattleBot IQ</h3>
+                        <p class="project-card-role">Hardware Engineer</p>
+                        <p class="project-card-excerpt">
+                            Designed and built a 15-pound battlebot in 5 weeks, placing 2nd at South by Southwest.
+                        </p>
+                        <span class="view-project">View Details →</span>
+                    </div>
+                </div>
+
+                <!-- Project Card 2: RC Car -->
+                <div class="project-card" onclick="openModal('modal2')">
+                    <img src="rccar-placeholder.jpg" alt="RC Car Project" class="project-card-image">
+                    <div class="project-card-content">
+                        <h3 class="project-card-title">RC Car Drivetrain</h3>
+                        <p class="project-card-role">Design & Fabrication Engineer</p>
+                        <p class="project-card-excerpt">
+                            Built a fully functional RC car from scratch with custom Ackermann steering and multi-stage drivetrain.
+                        </p>
+                        <span class="view-project">View Details →</span>
+                    </div>
+                </div>
+
+                <!-- Project Card 3: CNC Cube -->
+                <div class="project-card" onclick="openModal('modal3')">
+                    <img src="cnc-placeholder.jpg" alt="CNC Ball in Cube" class="project-card-image">
+                    <div class="project-card-content">
+                        <h3 class="project-card-title">CNC Ball in Cube</h3>
+                        <p class="project-card-role">CNC Machining</p>
+                        <p class="project-card-excerpt">
+                            Precision-machined a ball-in-cube from a 3" aluminum block using multi-axis CNC operations.
+                        </p>
+                        <span class="view-project">View Details →</span>
+                    </div>
+                </div>
+
+                <!-- Project Card 4: Graduation Gift -->
+                <div class="project-card" onclick="openModal('modal4')">
+                    <img src="gift-placeholder.jpg" alt="Custom Graduation Gift" class="project-card-image">
+                    <div class="project-card-content">
+                        <h3 class="project-card-title">Custom Graduation Gift</h3>
+                        <p class="project-card-role">Design & Fabrication</p>
+                        <p class="project-card-excerpt">
+                            Created a personalized multi-material gift using laser cutting, 3D printing, and press-fit assembly.
+                        </p>
+                        <span class="view-project">View Details →</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal 1: BattleBot -->
+    <div id="modal1" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('modal1')">×</button>
+            <img src="battlebot-placeholder.jpg" alt="SXSW BattleBot IQ" class="modal-image">
+            <div class="modal-body">
+                <h2 class="modal-title">SXSW BattleBot IQ</h2>
+                <p class="modal-role">Hardware Engineer, Structural Design & Manufacturing</p>
+                
+                <div class="modal-section">
+                    <h3>Overview</h3>
+                    <p>
+                        About 5 weeks before South by Southwest (SXSW), the UT robotics department was looking 
+                        for a team of students to build and compete with a 15-pound battlebot. This was an absurdly 
+                        quick timeline and an exciting challenge to go from nothing to concept to competition.
+                    </p>
+                </div>
+
+                <div class="modal-section">
+                    <h3>My Role & Contributions</h3>
+                    <ul>
+                        <li>Led structural design and material selection for the entire robot</li>
+                        <li>Designed wheel guards, modular forks, and back panel in SolidWorks</li>
+                        <li>Milled 6061-T6 aluminum backplate in-house using manual mill</li>
+                        <li>Manufactured HDPE wheel guards and components via laser cutting</li>
+                        <li>Managed DFM/DFA considerations under tight 5-week timeline</li>
+                        <li>Coordinated with team to ensure all components met safety regulations</li>
+                    </ul>
+                </div>
+
+                <div class="modal-section">
+                    <h3>Results</h3>
+                    <p>
+                        We placed 2nd in our group and won the robo-rumble match. Despite taking damage, 
+                        we sustained minimal critical failures and went through many replacement parts 
+                        throughout the matches. The quick turnaround demonstrated effective design iteration 
+                        and manufacturing efficiency.
+                    </p>
+                </div>
+
+                <div class="modal-section">
+                    <h3>Skills & Tools</h3>
+                    <div class="skills-grid">
+                        <span class="skill-tag">SolidWorks</span>
+                        <span class="skill-tag">DFM/DFA</span>
+                        <span class="skill-tag">Material Selection</span>
+                        <span class="skill-tag">Manual Milling</span>
+                        <span class="skill-tag">Laser Cutting</span>
+                        <span class="skill-tag">Assembly</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 2: RC Car -->
+    <div id="modal2" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('modal2')">×</button>
+            <img src="rccar-placeholder.jpg" alt="RC Car Project" class="modal-image">
+            <div class="modal-body">
+                <h2 class="modal-title">RC Car Drivetrain Project</h2>
+                <p class="modal-role">Design & Fabrication Engineer, Drivetrain and Mounts</p>
+                
+                <div class="modal-section">
+                    <h3>Overview</h3>
+                    <p>
+                        Class project given to create a vehicle from scratch—including the chassis, Ackermann 
+                        steering system, and rear-wheel-drive drivetrain—resulting in a fully functional car 
+                        that balanced performance, manufacturability, and reliability.
+                    </p>
+                </div>
+
+                <div class="modal-section">
+                    <h3>Technical Details</h3>
+                    <ul>
+                        <li>Designed custom pulleys and mounts for the drivetrain using Onshape CAD</li>
+                        <li>Implemented multi-stage gear and timing belt reduction system</li>
+                        <li>Performed FEA analysis in ANSYS to validate structural integrity</li>
+                        <li>Applied tolerance analysis and GD&T principles throughout design</li>
+                        <li>Iterated through multiple prototypes using 3D printing and laser cutting</li>
+                        <li>Developed Ackermann steering geometry for optimal turning radius</li>
+                    </ul>
+                </div>
+
+                <div class="modal-section">
+                    <h3>Design Evolution</h3>
+                    <p>
+                        Our initial drivetrain design was a spur gear system, but due to backlash between teeth, 
+                        they deteriorated beyond reliable use. We switched to a timing belt system to avoid 
+                        backlash and absorb more vibrations, making the drivetrain more durable and reliable 
+                        through rapid iteration.
+                    </p>
+                </div>
+
+                <div class="modal-section">
+                    <h3>Skills & Tools</h3>
+                    <div class="skills-grid">
+                        <span class="skill-tag">Onshape</span>
+                        <span class="skill-tag">ANSYS FEA</span>
+                        <span class="skill-tag">Mechanism Design</span>
+                        <span class="skill-tag">Tolerance Analysis</span>
+                        <span class="skill-tag">DFA/DFM</span>
+                        <span class="skill-tag">3D Printing</span>
+                        <span class="skill-tag">Laser Cutting</span>
+                        <span class="skill-tag">Soldering</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 3: CNC Cube -->
+    <div id="modal3" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('modal3')">×</button>
+            <img src="cnc-placeholder.jpg" alt="CNC Ball in Cube" class="modal-image">
+            <div class="modal-body">
+                <h2 class="modal-title">CNC Ball in Cube</h2>
+                <p class="modal-role">CNC Machining Project</p>
+                
+                <div class="modal-section">
+                    <h3>Overview</h3>
+                    <p>
+                        Started with a 3" cube of 6061 aluminum and ran 4 operations per each face 
+                        (roughing, spiral finish, edge finish, and a chamfer) to create a precision 
+                        ball-in-cube sculpture demonstrating advanced CNC programming and multi-setup machining.
+                    </p>
+                </div>
+
+                <div class="modal-section">
+                    <h3>Manufacturing Process</h3>
+                    <ul>
+                        <li>Programmed all toolpaths in Fusion360 CAM software</li>
+                        <li>Executed roughing operations to remove bulk material</li>
+                        <li>Applied spiral finishing for smooth internal surfaces</li>
+                        <li>Performed edge finishing and chamfering for clean aesthetics</li>
+                        <li>Managed workholding across multiple setups (6 faces)</li>
+                        <li>Maintained tight tolerances throughout all operations</li>
+                    </ul>
+                </div>
+
+                <div class="modal-section">
+                    <h3>Technical Challenges</h3>
+                    <p>
+                        The project required careful planning of tool paths to avoid collisions, strategic 
+                        workholding to access all faces while maintaining part integrity, and precise CAM 
+                        programming to achieve the final geometry. Each face required careful coordination 
+                        to ensure the internal ball remained free-floating without excessive clearance.
+                    </p>
+                </div>
+
+                <div class="modal-section">
+                    <h3>Skills & Tools</h3>
+                    <div class="skills-grid">
+                        <span class="skill-tag">Fusion360 CAM</span>
+                        <span class="skill-tag">3-Axis CNC</span>
+                        <span class="skill-tag">Workholding</span>
+                        <span class="skill-tag">Toolpath Planning</span>
+                        <span class="skill-tag">GD&T</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 4: Graduation Gift -->
+    <div id="modal4" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('modal4')">×</button>
+            <img src="gift-placeholder.jpg" alt="Custom Graduation Gift" class="modal-image">
+            <div class="modal-body">
+                <h2 class="modal-title">Custom Graduation Gift</h2>
+                <p class="modal-role">Design & Fabrication</p>
+                
+                <div class="modal-section">
+                    <h3>Overview</h3>
+                    <p>
+                        At my job at the makerspace, we always make gifts for graduating seniors. 
+                        I had a great time incorporating their interests while designing, manufacturing, 
+                        and assembling this for one of my best friends. The project combined multiple 
+                        fabrication techniques to create a personalized, multi-material keepsake.
+                    </p>
+                </div>
+
+                <div class="modal-section">
+                    <h3>Design & Manufacturing</h3>
+                    <ul>
+                        <li>Created custom 3D models incorporating personal interests and themes</li>
+                        <li>Used FDM 3D printing for structural components and detailed features</li>
+                        <li>Laser cut acrylic and wood elements for layered aesthetic</li>
+                        <li>Designed press-fit joints for tool-free assembly</li>
+                        <li>Selected materials for visual contrast and durability</li>
+                        <li>Iterated on fit and finish to ensure perfect assembly</li>
+                    </ul>
+                </div>
+
+                <div class="modal-section">
+                    <h3>Design Philosophy</h3>
+                    <p>
+                        The gift needed to be both functional and meaningful, capturing the recipient's 
+                        personality and interests. By combining digital fabrication techniques with 
+                        thoughtful design, I created something that balanced technical precision with 
+                        personal sentiment—showcasing how engineering can create emotional impact.
+                    </p>
+                </div>
+
+                <div class="modal-section">
+                    <h3>Skills & Tools</h3>
+                    <div class="skills-grid">
+                        <span class="skill-tag">Fusion360</span>
+                        <span class="skill-tag">Laser Cutting</span>
+                        <span class="skill-tag">FDM Printing</span>
+                        <span class="skill-tag">Press-Fit Design</span>
+                        <span class="skill-tag">Multi-Material Assembly</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>© 2026 Alexander Kelly. Designed and built with care.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Modal Functions
+        function openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        }
+
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.classList.remove('active');
+            document.body.style.overflow = ''; // Restore scrolling
+        }
+
+        // Close modal when clicking outside content
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        }
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                const activeModal = document.querySelector('.modal.active');
+                if (activeModal) {
+                    activeModal.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+            }
+        });
+
+        // Smooth scroll for internal links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
