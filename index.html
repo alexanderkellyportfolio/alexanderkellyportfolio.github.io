@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alexander Kelly — Mechanical Engineer</title>
+    <meta name="description" content="Alexander Kelly - Mechanical Engineer. UT Austin. Design through fabrication.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --black: #0a0a0a; --gray-900: #1a1a1a; --gray-800: #2a2a2a; --gray-700: #3a3a3a;
+            --gray-600: #6a6a6a; --gray-400: #9a9a9a; --gray-300: #c0c0c0; --gray-200: #e0e0e0;
+            --gray-100: #f0f0f0; --white: #fafafa;
+        }
+        body { font-family: 'Inter', -apple-system, sans-serif; background: var(--white); color: var(--black); line-height: 1.6; overflow-x: hidden; }
+        .mono { font-family: 'JetBrains Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 500; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 0 40px; }
+
+        header { position: fixed; top: 0; left: 0; right: 0; z-index: 100; border-bottom: 1px solid var(--gray-200); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); background: rgba(250,250,250,0.85); }
+        nav { display: flex; justify-content: space-between; align-items: center; padding: 24px 40px; }
+        .logo { font-size: 14px; font-weight: 600; letter-spacing: -0.01em; }
+        .nav-links { display: flex; gap: 32px; }
+        .nav-links a { color: var(--gray-600); text-decoration: none; font-size: 13px; font-weight: 500; transition: color 0.3s; }
+        .nav-links a:hover { color: var(--black); }
+
+        .hero { padding: 140px 0 100px; min-height: 90vh; display: flex; align-items: center; }
+        .hero-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 80px; align-items: center; }
+        .hero-text { opacity: 0; animation: fadeIn 1s ease-out 0.2s forwards; }
+        @keyframes fadeIn { to { opacity: 1; } }
+        .hero-label { color: var(--gray-600); margin-bottom: 24px; }
+        h1 { font-size: 64px; font-weight: 300; letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 32px; }
+        h1 strong { font-weight: 600; }
+        .hero-description { font-size: 18px; line-height: 1.7; color: var(--gray-800); max-width: 520px; margin-bottom: 40px; }
+        .hero-image-container { position: relative; aspect-ratio: 3/4; overflow: hidden; background: var(--gray-200); opacity: 0; animation: fadeIn 1s ease-out 0.4s forwards; }
+        .hero-image { width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%); transition: filter 0.6s; }
+        .hero-image-container:hover .hero-image { filter: grayscale(0%); }
+        .contact-bar { display: flex; gap: 24px; padding: 16px 0; border-top: 1px solid var(--gray-200); }
+        .contact-link { color: var(--gray-800); text-decoration: none; font-size: 13px; position: relative; }
+        .contact-link:after { content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 1px; background: var(--black); transition: width 0.3s; }
+        .contact-link:hover:after { width: 100%; }
+
+        .projects { padding: 120px 0; }
+        .section-header { margin-bottom: 80px; }
+        .section-title { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.15em; color: var(--gray-600); margin-bottom: 16px; }
+        .section-intro { font-size: 32px; font-weight: 300; line-height: 1.4; max-width: 720px; letter-spacing: -0.02em; }
+        .project-item { margin-bottom: 160px; opacity: 0; transform: translateY(30px); transition: opacity 0.9s cubic-bezier(0.25,0.46,0.45,0.94), transform 0.9s cubic-bezier(0.25,0.46,0.45,0.94); }
+        .project-item.visible { opacity: 1; transform: translateY(0); }
+        .project-item:nth-child(odd) .project-content { grid-template-columns: 1.3fr 1fr; }
+        .project-item:nth-child(even) .project-content { grid-template-columns: 1fr 1.3fr; direction: rtl; }
+        .project-item:nth-child(even) .project-text { direction: ltr; }
+        .project-content { display: grid; gap: 60px; align-items: start; }
+        .project-number { font-size: 11px; color: var(--gray-400); margin-bottom: 24px; font-weight: 500; }
+        .project-title { font-size: 42px; font-weight: 300; letter-spacing: -0.02em; line-height: 1.2; margin-bottom: 16px; cursor: pointer; transition: opacity 0.3s; }
+        .project-title:hover { opacity: 0.6; }
+        .project-role { font-size: 14px; color: var(--gray-600); margin-bottom: 28px; font-weight: 500; }
+        .project-description { font-size: 16px; line-height: 1.8; color: var(--gray-800); margin-bottom: 32px; }
+        .project-meta { display: flex; gap: 16px; flex-wrap: wrap; }
+        .meta-tag { font-size: 11px; padding: 6px 12px; border: 1px solid var(--gray-200); color: var(--gray-800); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 500; }
+        .project-image-wrapper { position: relative; aspect-ratio: 4/3; background: var(--gray-200); overflow: hidden; cursor: pointer; }
+        .project-image { width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s cubic-bezier(0.19,1,0.22,1); }
+        .project-image-wrapper:hover .project-image { transform: scale(1.08); }
+        .view-details { margin-top: 24px; font-size: 13px; color: var(--black); text-decoration: none; border-bottom: 1px solid var(--black); padding-bottom: 2px; display: inline-block; transition: opacity 0.3s; }
+        .view-details:hover { opacity: 0.5; }
+
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(250,250,250,0.98); z-index: 200; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+        .modal.active { display: block; animation: modalFade 0.3s ease; }
+        @keyframes modalFade { from { opacity: 0; } to { opacity: 1; } }
+        .modal-container { max-width: 900px; margin: 0 auto; padding: 100px 40px 80px; }
+        .modal-close { position: fixed; top: 32px; right: 40px; width: 40px; height: 40px; border: 1px solid var(--gray-200); background: var(--white); cursor: pointer; font-size: 20px; transition: all 0.3s; color: var(--black); z-index: 210; display: flex; align-items: center; justify-content: center; line-height: 1; }
+        .modal-close:hover { background: var(--black); color: var(--white); }
+        .modal-close:focus { outline: 2px solid var(--black); outline-offset: 2px; }
+        .modal-header { margin-bottom: 40px; padding-bottom: 32px; border-bottom: 1px solid var(--gray-200); }
+        .modal-title { font-size: 48px; font-weight: 300; letter-spacing: -0.02em; margin-bottom: 12px; }
+        .modal-subtitle { font-size: 16px; color: var(--gray-600); margin-bottom: 8px; }
+        .modal-timeline { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.08em; }
+        .modal-skills-bar { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 48px; padding-bottom: 32px; border-bottom: 1px solid var(--gray-200); }
+        .modal-skill { padding: 7px 14px; border: 1px solid var(--gray-200); font-size: 11px; color: var(--gray-800); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 500; }
+        .modal-section { margin-bottom: 48px; }
+        .modal-section-title { font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--gray-600); margin-bottom: 20px; font-weight: 600; }
+        .modal-section p { font-size: 17px; line-height: 1.8; color: var(--gray-800); }
+        .modal-section p + p { margin-top: 16px; }
+        .inline-img { width: 100%; display: block; margin: 28px 0 4px; background: var(--gray-100); object-fit: cover; }
+        .img-caption { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.06em; padding: 8px 0 24px; }
+        .calc-block { background: var(--gray-100); border-left: 2px solid var(--gray-300); padding: 20px 24px; margin: 20px 0; font-family: 'JetBrains Mono', monospace; font-size: 13px; line-height: 1.9; color: var(--gray-800); overflow-x: auto; }
+        .calc-block .calc-label { font-family: 'Inter', sans-serif; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--gray-400); margin-bottom: 8px; display: block; font-weight: 600; }
+        .calc-block .result { color: var(--black); font-weight: 500; }
+        .spec-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--gray-200); margin: 20px 0; }
+        .spec-item { background: var(--white); padding: 16px 20px; }
+        .spec-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--gray-400); margin-bottom: 4px; }
+        .spec-value { font-size: 15px; color: var(--black); font-weight: 500; }
+        .tech-toggle { display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 12px 0; border: none; background: none; font-family: 'JetBrains Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--gray-600); font-weight: 500; transition: color 0.3s; width: 100%; text-align: left; }
+        .tech-toggle:hover { color: var(--black); }
+        .tech-toggle::after { content: '+'; font-size: 14px; }
+        .tech-toggle.open::after { content: '\2212'; }
+        .tech-content { max-height: 0; overflow: hidden; transition: max-height 0.5s ease; }
+        .tech-content.open { max-height: 8000px; }
+        .tech-content-inner { padding: 0 0 24px; }
+
+        footer { padding: 80px 0 40px; border-top: 1px solid var(--gray-200); }
+        .footer-content { display: flex; justify-content: space-between; align-items: center; }
+        .footer-text { font-size: 13px; color: var(--gray-600); }
+        .footer-links { display: flex; gap: 24px; }
+        .footer-links a { font-size: 12px; color: var(--gray-600); text-decoration: none; transition: color 0.3s; }
+        .footer-links a:hover { color: var(--black); }
+        .placeholder-img { width: 100%; aspect-ratio: 16/10; background: var(--gray-100); display: flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.06em; border: 1px dashed var(--gray-300); }
+
+        @media (max-width: 1024px) {
+            .container { padding: 0 32px; } h1 { font-size: 48px; }
+            .hero-grid { grid-template-columns: 1fr; gap: 48px; }
+            .project-item:nth-child(odd) .project-content, .project-item:nth-child(even) .project-content { grid-template-columns: 1fr; direction: ltr; }
+            .spec-grid { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 768px) {
+            nav { padding: 20px 24px; } .nav-links { gap: 20px; } .hero { padding: 100px 0 60px; }
+            h1 { font-size: 36px; } .section-intro { font-size: 24px; } .project-title { font-size: 32px; }
+            .project-item { margin-bottom: 100px; } .modal-container { padding: 80px 24px 40px; }
+            .modal-close { top: 24px; right: 24px; } .modal-title { font-size: 32px; }
+            .calc-block { font-size: 11px; padding: 16px; }
+            .footer-content { flex-direction: column; gap: 24px; text-align: center; }
+        }
+        @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+    </style>
+</head>
+<body>
+    <header><nav><div class="logo">ALEXANDER KELLY</div><div class="nav-links"><a href="#work">Work</a><a href="mailto:alexander.kelly@utexas.edu">Contact</a><a href="resume.pdf" target="_blank">Resume</a></div></nav></header>
+
+    <section class="hero"><div class="container"><div class="hero-grid">
+        <div class="hero-text">
+            <p class="hero-label mono">Mechanical Engineer</p>
+            <h1>Design through <strong>fabrication</strong></h1>
+            <p class="hero-description">Senior ME at UT Austin with hands-on experience across combat robotics, drivetrain systems, CNC machining, and thermal analysis. President of Texas Inventionworks, a 23,000 sq ft makerspace serving 4,000+ students. Looking for mechanical design roles where I can take products from concept through prototyping and testing.</p>
+            <div class="contact-bar">
+                <a href="mailto:alexander.kelly@utexas.edu" class="contact-link">Email</a>
+                <a href="https://www.linkedin.com/in/alexander-m-kelly" class="contact-link" target="_blank">LinkedIn</a>
+            </div>
+        </div>
+        <div class="hero-image-container"><img src="profilepic.jpg" alt="Alexander Kelly" class="hero-image"></div>
+    </div></div></section>
+
+    <section class="projects" id="work"><div class="container">
+        <div class="section-header">
+            <p class="section-title">Selected Work</p>
+            <p class="section-intro">Projects covering structural design, power transmission, precision machining, mechatronics, and thermal systems.</p>
+        </div>
+
+        <article class="project-item"><div class="project-content"><div class="project-text">
+            <p class="project-number mono">01 / 07</p>
+            <h2 class="project-title" onclick="openModal('modal1')">SXSW BattleBot IQ</h2>
+            <p class="project-role">Hardware Engineer, Structural Design &amp; Manufacturing</p>
+            <p class="project-description">15-lb combat robot built in five weeks for the SXSW BattleBots competition. I handled structural design, material selection, and in-house manufacturing. Placed 2nd after 8 matches with zero critical structural failures.</p>
+            <div class="project-meta"><span class="meta-tag">SolidWorks</span><span class="meta-tag">Manual Milling</span><span class="meta-tag">DFM</span></div>
+            <a href="#" class="view-details" onclick="event.preventDefault(); openModal('modal1')">View Project</a>
+        </div><div class="project-image-wrapper" onclick="openModal('modal1')"><img src="battlebot_coverpic.png" alt="BattleBot IQ at SXSW" class="project-image"></div></div></article>
+
+        <article class="project-item"><div class="project-content"><div class="project-text">
+            <p class="project-number mono">02 / 07</p>
+            <h2 class="project-title" onclick="openModal('modal2')">RC Car Drivetrain</h2>
+            <p class="project-role">Design Engineer, Drivetrain &amp; Mounts</p>
+            <p class="project-description">Designed the drivetrain for a from-scratch RC car build. Initial spur gear system failed from backlash-induced fatigue, so I redesigned around timing belts while keeping the same 6.4:1 ratio. FEA validated in ANSYS, with Ackermann steering geometry on the front end.</p>
+            <div class="project-meta"><span class="meta-tag">Onshape</span><span class="meta-tag">ANSYS FEA</span><span class="meta-tag">3D Printing</span></div>
+            <a href="#" class="view-details" onclick="event.preventDefault(); openModal('modal2')">View Project</a>
+        </div><div class="project-image-wrapper" onclick="openModal('modal2')"><img src="rccar_finaldesign.jpg" alt="RC car with timing belt drivetrain" class="project-image"></div></div></article>
+
+        <article class="project-item"><div class="project-content"><div class="project-text">
+            <p class="project-number mono">03 / 07</p>
+            <h2 class="project-title" onclick="openModal('modal3')">Slider-Crank Mechanism</h2>
+            <p class="project-role">ME 350R, Mechanism Design &amp; Fabrication</p>
+            <p class="project-description">Grashof-verified four-bar linkage with laser-cut acrylic links and 3D-printed PETG bearing holders. Most of the challenge was getting the press-fit bearing holes right, which took three rounds of test cuts in 0.05mm increments.</p>
+            <div class="project-meta"><span class="meta-tag">Laser Cutting</span><span class="meta-tag">3D Printing</span><span class="meta-tag">Mechanism Design</span></div>
+            <a href="#" class="view-details" onclick="event.preventDefault(); openModal('modal3')">View Project</a>
+        </div><div class="project-image-wrapper" onclick="openModal('modal3')"><img src="slidercrank_final.jpg" alt="Assembled slider-crank mechanism" class="project-image"></div></div></article>
+
+        <article class="project-item"><div class="project-content"><div class="project-text">
+            <p class="project-number mono">04 / 07</p>
+            <h2 class="project-title" onclick="openModal('modal4')">Arduino Robot Car</h2>
+            <p class="project-role">ME 350R, Mechatronics &amp; Electronics</p>
+            <p class="project-description">Joystick-controlled differential drive robot. The focus here was cable management and clean integration. Every wire sits within 2mm of the chassis with zero protrusion beyond the footprint. All connections soldered, no breadboards.</p>
+            <div class="project-meta"><span class="meta-tag">Arduino</span><span class="meta-tag">Soldering</span><span class="meta-tag">Motor Control</span></div>
+            <a href="#" class="view-details" onclick="event.preventDefault(); openModal('modal4')">View Project</a>
+        </div><div class="project-image-wrapper" onclick="openModal('modal4')"><img src="arduinocar_topview.jpg" alt="Arduino robot car top view" class="project-image"></div></div></article>
+
+        <article class="project-item"><div class="project-content"><div class="project-text">
+            <p class="project-number mono">05 / 07</p>
+            <h2 class="project-title" onclick="openModal('modal5')">CNC Ball in Cube</h2>
+            <p class="project-role">CNC Machining &amp; CAM Programming</p>
+            <p class="project-description">Precision sculpture machined from a 3-inch 6061-T6 cube. 24 operations across 6 setups to create a free-floating internal ball. All toolpaths programmed in Fusion360, finished to Ra 0.4&#956;m with hand sanding.</p>
+            <div class="project-meta"><span class="meta-tag">Fusion360 CAM</span><span class="meta-tag">3-Axis CNC</span><span class="meta-tag">GD&T</span></div>
+            <a href="#" class="view-details" onclick="event.preventDefault(); openModal('modal5')">View Project</a>
+        </div><div class="project-image-wrapper" onclick="openModal('modal5')"><img src="ballincube_final.png" alt="CNC ball-in-cube" class="project-image"></div></div></article>
+
+        <article class="project-item"><div class="project-content"><div class="project-text">
+            <p class="project-number mono">06 / 07</p>
+            <h2 class="project-title" onclick="openModal('modal6')">Graduation Gift</h2>
+            <p class="project-role">Design &amp; Fabrication</p>
+            <p class="project-description">Multi-material keepsake for a graduating friend, built at Texas Inventionworks. Five layers of laser-cut acrylic and birch plywood with 3D-printed accents. No adhesives anywhere, entirely press-fit assembly.</p>
+            <div class="project-meta"><span class="meta-tag">Laser Cutting</span><span class="meta-tag">FDM Printing</span><span class="meta-tag">Press-Fit Design</span></div>
+            <a href="#" class="view-details" onclick="event.preventDefault(); openModal('modal6')">View Project</a>
+        </div><div class="project-image-wrapper" onclick="openModal('modal6')"><img src="gradgift_topview.JPEG" alt="Multi-material graduation gift" class="project-image"></div></div></article>
+
+        <article class="project-item"><div class="project-content"><div class="project-text">
+            <p class="project-number mono">07 / 07</p>
+            <h2 class="project-title" onclick="openModal('modal7')">Red Cross Cooling Station</h2>
+            <p class="project-role">Thermal Analysis Lead, Senior Design Capstone</p>
+            <p class="project-description">CFD and thermal load analysis for a deployable cooling shelter, designed for the International Red Cross. Calculated 11.2 kW total heat load across conduction, solar, occupant, and infiltration sources, then validated a 3-ton AC system across four climate scenarios.</p>
+            <div class="project-meta"><span class="meta-tag">SolidWorks CFD</span><span class="meta-tag">Heat Transfer</span><span class="meta-tag">HVAC</span></div>
+            <a href="#" class="view-details" onclick="event.preventDefault(); openModal('modal7')">View Project</a>
+        </div><div class="project-image-wrapper" onclick="openModal('modal7')"><div class="placehol="spec-label">Mesh</div><div class="spec-value">45k nodes, 0.5mm tet</div></div>
+                    </div>
+                </div></div>
+                <button class="tech-toggle" onclick="toggleTech(this)">Ackermann Steering</button>
+                <div class="tech-content"><div class="tech-content-inner">
+                    <p>The front end uses Ackermann steering geometry to minimize tire scrub during turns.</p>
+                    <div class="calc-block"><span class="calc-label">Steering Angles</span>Wheelbase L = 200mm, Track T = 150mm<br>Min turn radius R = 300mm<br><br>&#952;_inner = tan&#8315;&#185;(200/300) = 33.7&#176;<br>&#952;_outer = tan&#8315;&#185;(200/450) = 24.0&#176;<br><br><span class="result">Inner turns 9.7&#176; more than outer</span></div>
+                </div></div>
+                <button class="tech-toggle" onclick="toggleTech(this)">Shaft Sizing &amp; Bearing Life</button>
+                <div class="tech-content"><div class="tech-content-inner">
+                    <p>Intermediate shaft is 1045 steel, 4mm radius. Torsional shear comes out to 5.6 MPa, but the bending from belt tension creates 79.6 MPa. Combined von Mises equivalent: 80 MPa against 310 MPa yield gives FOS of 3.9. Deflection is 0.2mm, within the 0.5mm spec for bearing alignment.</p>
+                    <div class="calc-block"><span class="calc-label">688ZZ Bearing Life</span>C = 450N dynamic rating, P = 50N load<br>L10 = (450/50)&#179; &#215; 10&#8310; = 729M rev<br><span class="result">8,100 hrs at 1500 RPM (81&#215; target life)</span><br>Real limit: dust contamination, not fatigue</div>
+                </div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 1: BattleBot -->
+    <div id="modal1" class="modal" role="dialog" aria-label="BattleBot project details">
+        <button class="modal-close" onclick="closeModal('modal1')" aria-label="Close">&times;</button>
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2 class="modal-title">SXSW BattleBot IQ</h2>
+                <p class="modal-subtitle">Hardware Engineer, Structural Design &amp; Manufacturing</p>
+                <p class="modal-timeline">5 weeks &middot; 15-lb class &middot; 2nd place at SXSW</p>
+            </div>
+            <div class="modal-skills-bar"><span class="modal-skill">SolidWorks</span><span class="modal-skill">Manual Milling</span><span class="modal-skill">Laser Cutting</span><span class="modal-skill">Material Selection</span><span class="modal-skill">DFM/DFA</span><span class="modal-skill">Tolerance Analysis</span><span class="modal-skill">Impact Load Analysis</span></div>
+            <div class="modal-section">
+                <h3 class="modal-section-title">Context</h3>
+                <p>UT's robotics department needed a 15-lb combat robot for SXSW with about five weeks of lead time. My responsibility was the structural design: backplate, wheel guards, modular forks, and the mounting scheme that tied everything together. The whole design was built around field repairability since we knew components would take damage during competition.</p>
+                <img src="battlebots_topview.jpg" alt="Top-down view of BattleBot" class="inline-img" style="aspect-ratio:16/10;">
+                <p class="img-caption">Full assembly, top view</p>
+            </div>
+            <div class="modal-section">
+                <h3 class="modal-section-title">Material Selection</h3>
+                <p>The backplate is 6061-T6 aluminum. Yield strength of 275 MPa at 2.7 g/cm3 gives a strength-to-weight ratio around 102 MPa per unit density. I looked at 7075-T6 as well (stronger at 570 MPa but too brittle under impact loading, and you can't weld it if something cracks in the field) and 2024 (aerospace-grade, more expensive than we needed). 6061 was the clear choice for a combat application where machinability and repairability matter.</p>
+                <p>Wheel guards are HDPE at Shore D 66 hardness. Low friction means opponents slide off on contact, and the material absorbs impacts elastically without cracking. I tested 3mm thickness first but it cracked, then 6mm which held up, and 8mm was too heavy. The weapon drum is 4340 hardened steel, heat treated to 470 MPa yield.</p>
+                <img src="battlebots_cad.png" alt="SolidWorks CAD model of BattleBot" class="inline-img" style="aspect-ratio:16/10;">
+                <p class="img-caption">SolidWorks CAD model</p>
+            </div>
+            <div class="modal-section">
+                <h3 class="modal-section-title">Weight Budget</h3>
+                <div class="spec-grid">
+                    <div class="spec-item"><div class="spec-label">Structure</div><div class="spec-value">4.2 lb (28%)</div></div>
+                    <div class="spec-item"><div class="spec-label">Weapon System</div><div class="spec-value">5.8 lb (39%)</div></div>
+                    <div class="spec-item"><div class="spec-label">Electronics</div><div class="spec-value">2.4 lb (16%)</div></div>
+                    <div class="spec-item"><div class="spec-label">Drive System</div><div class="spec-value">2.2 lb (15%)</div></div>
+                </div>
+                <p>Total came to 14.6 lb out of the 15 lb limit, so 97% utilization with 0.4 lb of margin saved for damage repair between matches.</p>
+            </div>
+            <div class="modal-section">
+                <h3 class="modal-section-title">Manufacturing</h3>
+                <p>I milled the backplate on a manual Bridgeport at 1000 RPM with a 6mm 2-flute HSS end mill, 100 mm/min feed rate, 0.5mm depth of cut. Went with HSS over carbide because carbide tends to chip on interrupted cuts. Surface finish was around Ra 3.2 microns, which is fine for a structural part.</p>
+                <img src="battlebots_milling.jpg" alt="Milling the aluminum backplate" class="inline-img" style="aspect-ratio:16/10;">
+                <p class="img-caption">Milling the backplate, 1000 RPM, 100mm/min feed</p>
+                <p>Wheel guards were laser cut on a Trotec Speedy 300 at 80W, 10 mm/s. Had to keep the speed low to avoid melting the HDPE.</p>
+            </div>
+            <div class="modal-section">
+                <h3 class="modal-section-title">Engineering Details</h3>
+                <button class="tech-toggle" onclick="toggleTech(this)">Weapon Energy &amp; Impact Forces</button>
+                <div class="tech-content"><div class="tech-content-inner">
+                    <p>The drum weapon stores a meaningful amount of kinetic energy. I measured the moment of inertia using a torsion pendulum (I = 0.008 kg m2) and the belt system caps out around 3000 RPM.</p>
+                    <div class="calc-block"><span class="calc-label">Stored Kinetic Energy</span>w = 3000 x 2pi/60 = 314 rad/s<br>KE = 0.5 x I x w^2 = 0.5 x 0.008 x 314^2<br><span class="result">KE = 395 J</span></div>
+                    <p>From high-speed video, metal-on-metal contact is about 10ms. Roughly half the energy transfers per hit.</p>
+                    <div class="calc-block"><span class="calc-label">Peak Impact Force</span>F = 200 J / 0.01 s<br><span class="result">F = 20 kN peak</span><br><br>Design target: 3x FOS = 60 kN structural capacity</div>
+                </div></div>
+                <button class="tech-toggle" onclick="toggleTech(this)">Tolerances &amp; Fits</button>
+                <div class="tech-content"><div class="tech-content-inner">
+                    <p>Bearing press-fits used H7/h6 tolerance (light interference, 0.01-0.02mm). The weapon shaft hex hub sees a bearing stress of 87 MPa on 4140 steel at 415 MPa yield, so FOS of 4.8. Wheel guard mounting uses clearance fit H8/f7 for quick replacement during competition.</p>
+                </div></div>
+            </div>
+            <div class="modal-section">
+                <h3 class="modal-section-title">Results</h3>
+                <img src="battlebots_before.jpg" alt="BattleBot before competition" class="inline-img" style="aspect-ratio:16/10;">
+                <p class="img-caption">Before competition</p>
+                <img src="battlebots_after.jpg" alt="BattleBot after 8 matches" class="inline-img" style="aspect-ratio:16/10;">
+                <p class="img-caption">After 8 matches</p>
+                <p>8 matches, 2nd place finish. I replaced 3 wheel guards over the course of the tournament, which was expected since they're designed as sacrificial armor. One fork got bent and I swapped it in about 10 minutes between rounds. The backplate, weapon shaft, and all bearings survived the entire event without failure.</p>
+                <img src="battlebots_team.jpg" alt="BattleBot team at SXSW" class="inline-img" style="aspect-ratio:16/10;">
+                <p class="img-caption">The team at SXSW</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 2: RC Car -->
+    <div id="modal2" class="modal" role="dialog" aria-label="RC Car project details">
+        <button class="modal-close" onclick="closeModal('modal2')" aria-label="Close">&times;</button>
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2 class="modal-title">RC Car Drivetrain</h2>
+                <p class="modal-subtitle">Design &amp; Fabrication Engineer, Drivetrain</p>
+                <p class="modal-timeline">8-week academic project</p>
+            </div>
+            <div class="modal-skills-bar"><span class="modal-skill">Onshape</span><span class="modal-skill">ANSYS FEA</span><span class="modal-skill">Drivetrain Design</span><span class="modal-skill">Failure Analysis</span><span class="modal-skill">Belt Drives</span><span class="modal-skill">Shaft Sizing</span><span class="modal-skill">Bearing Selection</span><span class="modal-skill">Tolerance Analysis</span></div>
+            <div class="modal-section">
+                <h3 class="modal-section-title">Context</h3>
+                <p>Class project where we built an RC car from scratch. I was responsible for the rear-wheel-drive drivetrain and all the associated mounting. The car also had an Ackermann steering system on the front end. My initial spur gear design didn't hold up, so the project ended up being as much about diagnosing the failure and redesigning as it was about the original design work.</p>
+                <img src="rccar_initialdesign.jpg" alt="Initial RC car with spur gear system" class="inline-img" style="aspect-ratio:16/10;">
+                <p class="img-caption">Initial design with spur gears</p>
+            </div>
+            <div class="modal-section">
+                <h3 class="modal-section-title">Gear Failure and Redesign</h3>
+                <p>The first drivetrain used 3D-printed PLA spur gears in a two-stage reduction (10T to 20T, then 15T to 48T, total 6.4:1). After about 15-20 minutes of running, the teeth stripped. The root cause was backlash in the gear mesh creating impact loads on every drive-coast-drive transition. PLA fatigue strength is only around 30 MPa at 10^6 cycles, and the dynamic loading was pushing tooth stress to roughly 50 MPa.</p>
+                <img src="rccar_finaldesign.jpg" alt="Final RC car with timing belt system" class="inline-img" style="aspect-ratio:16/10;">
+                <p class="img-caption">Redesigned with timing belt system</p>
+                <p>The timing belt redesign used HTD profile belts with 5mm pitch. First stage: 18T motor pulley to 36T jackshaft (2:1). Second stage: 25T jackshaft to 80T axle (3.2:1). Same 6.4:1 total ratio so vehicle dynamics stayed the same. Key improvements: zero backlash from positive tooth engagement, elastic absorption of transient loads (about 40% peak stress reduction), and vibration damping. Ran 40+ minutes without issues.</p>
+                <img src="rccar_pulley.png" alt="Timing belt and pulley detail" class="inline-img" style="aspect-ratio:16/10;">
+                <p class="img-caption">HTD timing belt and pulley assembly</p>
+            </div>
+            <div class="modal-section">
+                <h3 class="modal-section-title">Engineering Details</h3>
+                <button class="tech-toggle" onclick="toggleTech(this)">FEA on Pulley Mount</button>
+                <div class="tech-content"><div class="tech-content-inner">
+                    <p>Ran ANSYS on the PLA pulley mount with 50N belt tension (peak during acceleration) and PLA material properties (E=3500 MPa, yield=50 MPa).</p>
+                    <img src="rccar_FEA.png" alt="ANSYS stress analysis on pulley mount" class="inline-img" style="aspect-ratio:16/10;">
+                    <p class="img-caption">Von Mises stress, 12 MPa max at bolt hole</p>
+                    <div class="spec-grid">
+                        <div class="spec-item"><div class="spec-label">Max Von Mises</div><div class="spec-value">12 MPa</div></div>
+                        <div class="spec-item"><div class="spec-label">Max Deflection</div><div class="spec-value">0.3 mm</div></div>
+                        <div class="spec-item"><div class="spec-label">Safety Factor</div><div class="spec-value">4.2</div></div>
+                        <div class="spec-item"><div class="spec-label">Mesh</div><div class="spec-value">45k nodes, 0.5mm tet</div></div>
+                    </div>
+                </div></div>
+                <button class="tech-toggle" onclick="toggleTech(this)">Ackermann Steering</button>
+                <div class="tech-content"><div class="tech-content-inner">
+                    <p>The front end uses Ackermann steering geometry to minimize tire scrub during turns.</p>
+                    <div class="calc-block"><span class="calc-label">Steering Angles</span>Wheelbase L = 200mm, Track T = 150mm<br>Min turn radius R = 300mm<br><br>Inner = arctan(200/300) = 33.7 deg<br>Outer = arctan(200/450) = 24.0 deg<br><br><span class="result">Inner turns 9.7 deg more than outer</span></div>
+                </div></div>
+                <button class="tech-toggle" onclick="toggleTech(this)">Shaft Sizing &amp; Bearing Life</button>
+                <div class="tech-content"><div class="tech-content-inner">
+                    <p>Intermediate shaft is 1045 steel, 4mm radius. Torsional shear is 5.6 MPa, bending from belt tension creates 79.6 MPa. Combined von Mises: 80 MPa against 310 MPa yield gives FOS of 3.9.</p>
+                    <div class="calc-block"><span class="calc-label">688ZZ Bearing Life</span>C = 450N dynamic rating, P = 50N load<br>L10 = (450/50)^3 x 10^6 = 729M rev<br><span class="result">8,100 hrs at 1500 RPM (81x target life)</span><br>Real limit: dust contamination, not fatigue</div>
+                </div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 3: Slider Crank -->
+    <div id="modal3" class="modal" role="dialog" aria-label="Slider-Crank project details">
+        <button class="modal-close" onclick="closeModal('modal3')" aria-label="Close">&#215;</button>
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2 class="modal-title">Slider-Crank Mechanism</h2>
+                <p class="modal-subtitle">ME 350R, Mechanism Design &amp; Fabrication</p>
+                <p class="modal-timeline">Laser cutting &#183; 3D printing &#183; Press-fit iteration</p>
+            </div>
+            <div class="modal-skills-bar"><span class="modal-skill">Laser Cutting</span><span class="modal-skill">3D Printing (PETG)</span><span class="modal-skill">Mechanism Design</span><span class="modal-skill">Grashof Analysis</span><span class="modal-skill">Beam Bending</span><span class="modal-skill">Press-Fit Design</span><span class="modal-skill">Tolerance Iteration</span></div>
+
+            <div class="modal-section">
+                <h3 class="modal-section-title">Overview</h3>
+                <p>The assignment was to build a Grashof mechanism that could rotate continuously with less than 2mm of joint play, less than 3mm out-of-plane motion, and support a 10N load over a 50mm stroke. I laser-cut the acrylic linkages on the Trotec Speedy 300 and 3D-printed the standoffs, bearing holders, and feet in PETG on a Bambu P1P.</p>
+                <img src="slidercrank_cad.png" alt="CAD model of slider-crank mechanism" class="inline-img" style="aspect-ratio:16/10;">
+                <p class="img-caption">CAD model with link dimensions</p>
+            </div>
+
+            <div class="modal-section">
+                <h3 class="modal-section-title">Press-Fit Iteration</h3>
+                <p>This was the hardest part of the project. The rotary bearings are 6mm ID and getting a tight press-fit in laser-cut acrylic without cracking it requires some iteration. My first test cut used 6.0mm holes, which left about 0.3mm of play. The bearing just rattled in there. Second attempt at 5.9mm brought it down to 0.1mm, which was better but still not where I wanted it. Third round at 5.85mm gave less than 0.05mm play. Assembly needed a light tap with a mallet (maybe 50N of force) but the fit was solid and nothing cracked.</p>
+                <img src="slidercrank_pressfitcalibration.jpg" alt="Testing press-fit bearing holes at different diameters" class="inline-img" style="aspect-ratio:16/10;">
+                <p class="img-caption">Press-fit test cuts: 6.0mm, 5.9mm, 5.85mm</p>
+                <img src="slidercrank_lasercuttingtest.jpg" alt="Laser cutting test pieces" class="inline-img" style="aspect-ratio:16/10;">
+                <p class="img-caption">Laser cut test pieces, dialing in kerf compensation</p>
+            </div>
+
+            <div class="modal-section">
+                <h3 class="modal-section-title">Engineering Details</h3>
+                <button class="tech-toggle" onclick="toggleTech(this)">Grashof Criterion</button>
+                <div class="tech-content"><div class="tech-content-inner">
+                    <div class="calc-block"><span class="calc-label">Link Lengths</span>L1 = 100mm (ground), L2 = 60mm (crank)<br>L3 = 120mm (coupler), L4 = 80mm (slider)<br><br>s + l &#8804; p + q<br>60 + 120 = 180 &#8804; 100 + 80 = 180<br><span class="result">Grashof satisfied, crank rotates 360&#176;</span></div>
+                </div></div>
+                <button class="tech-toggle" onclick="toggleTech(this)">Cantilever Load Analysis</button>
+                <div class="tech-content"><div class="tech-content-inner">
+                    <p>The 10N load test uses a 100mm unsupported cantilever in 3mm acrylic. Needed to verify it wouldn't snap or deflect enough to bind the mechanism.</p>
+                    <div class="calc-block"><span class="calc-label">Bending Stress</span>M = 10N &#215; 0.1m = 1 N&#183;m<br>S = (20 &#215; 3&#178;)/6 = 30 mm&#179;<br>&#963; = 1000/30 = 33.3 MPa<br><span class="result">FOS = 70/33.3 = 2.1 &#10003;</span></div>
+                    <div class="calc-block"><span class="calc-label">Deflection</span>&#948; = FL&#179;/(3EI) = (10 &#215; 100&#179;)/(3 &#215; 3000 &#215; 45)<br><span class="result">&#948; = 2.47mm, small enough to not bind</span></div>
+                </div></div>
+            </div>
+
+            <div class="modal-section">
+                <h3 class="modal-section-title">Results</h3>
+                <img src="slidercrank_final.jpg" alt="Final assembled slider-crank mechanism" class="inline-img" style="aspect-ratio:16/10;">
+                <p class="img-caption">Final assembled mechanism</p>
+                <div class="spec-grid">
+                    <div class="spec-item"><div class="spec-label">Out-of-Plane Motion</div><div class="spec-value">2.8mm (spec: &lt;3mm)</div></div>
+                    <div class="spec-item"><div class="spec-label">Joint Play</div><div class="spec-value">1.9mm (spec: &lt;2mm)</div></div>
+                    <div class="spec-item"><div class="spec-label">Load Test</div><div class="spec-value">10N over 50mm &#10003;</div></div>
+                    <div class="spec-item"><div class="spec-label">Crank Rotation</div><div class="spec-value">Full 360&#176; &#10003;</div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 4: Arduino Car -->
+    <div id="modal4" class="modal" role="dialog" aria-label="Arduino Car project details">
+        <button class="modal-close" onclick="closeModal('modal4')" aria-label="Close">&#215;</button>
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2 class="modal-title">Arduino Robot Car</h2>
+                <p class="modal-subtitle">ME 350R, Mechatronics &amp; Electronics Integration</p>
+                <p class="modal-timeline">Differential drive &#183; All-soldered connections</p>
+            </div>
+            <div class="modal-skills-bar"><span class="modal-skill">Arduino (C/C++)</span><span class="modal-skill">Soldering</span><span class="modal-skill">Laser Cutting</span><span class="modal-skill">3D Printing (PETG)</span><span class="modal-skill">Circuit Design</span><span class="modal-skill">PWM Motor Control</span><span class="modal-skill">Power Budgeting</span></div>
+
+            <div class="modal-section">
+                <h3 class="modal-section-title">Overview</h3>
+                <p>The assignment was a joystick-controlled robot that could carry a 0.5kg payload. There was a separate grading criterion for cable management, so I designed the wire routing into the laser-cut chassis from the start rather than trying to clean it up after the fact. I cut channels directly into the acrylic base plate and integrated clip features into the 3D-printed motor mounts.</p>
+                <img src="arduinocar_topview.jpg" alt="Top view showing cable management" class="inline-img" style="aspect-ratio:16/10;">
+                <p class="img-caption">Top view, all wires within 2mm clearance</p>
+            </div>
+
+            <div class="modal-section">
+                <h3 class="modal-section-title">Electronics &amp; Controls</h3>
+                <p>The control system is an Arduino Uno driving two DC gearmotors (6V, 200 RPM no-load, 48:1 gearbox) through an L298N dual H-bridge. The joystick outputs 0-1023 on the analog pins. I set up a deadzone of &#177;50 counts around center to prevent motor drift from noise, then mixed X and Y axes for differential steering. Left motor gets the Y value plus half of X, right motor gets Y minus half of X, both constrained to the PWM range.</p>
+                <img src="arduinocar_cad.png" alt="CAD model showing wire routing channels" class="inline-img" style="aspect-ratio:16/10;">
+                <p class="img-caption">CAD layout with routing channels and mount locations</p>
+                <button class="tech-toggle" onclick="toggleTech(this)">Power Budget</button>
+                <div class="tech-content"><div class="tech-content-inner">
+                    <div class="calc-block"><span class="calc-label">Power Draw</span>Motors at 50% load: 2 &#215; 0.5A &#215; 6V = 6W<br>Arduino: 50mA &#215; 5V = 0.25W<br>L298N losses (~80% eff): ~1.5W<br><span class="result">Total: 7.75W &#8594; 1.55 hrs on 4&#215;AA NiMH</span></div>
+                </div></div>
+            </div>
+
+            <div class="modal-section">
+                <h3 class="modal-section-title">Mechanical Design</h3>
+                <p>Chassis is a 150&#215;200mm laser-cut acrylic base (3mm) with a 2mm top plate. Motor mounts are PETG printed to match the 37mm gearbox diameter with a 4-point bolt pattern. The caster wheel mount has 5mm of height adjustment for leveling. For the structural test, I placed 0.5kg on the top plate and measured 0.3mm deflection at center with a dial indicator.</p>
+                <img src="arduinocar_coverimage.jpg" alt="Arduino car full assembly" class="inline-img" style="aspect-ratio:16/10;">
+                <p class="img-caption">Complete assembly</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 5: CNC Ball in Cube -->
+    <div id="modal5" class="modal" role="dialog" aria-label="CNC Ball in Cube project details">
+        <button class="modal-close" onclick="closeModal('modal5')" aria-label="Close">&#215;</button>
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2 class="modal-title">CNC Ball in Cube</h2>
+                <p class="modal-subtitle">CNC Machining &amp; CAM Programming</p>
+                <p class="modal-timeline">3 weeks &#183; 6 setups &#183; ~4 hours machine time</p>
+            </div>
+            <div class="modal-skills-bar"><span class="modal-skill">Fusion360 CAM</span><span class="modal-skill">3-Axis CNC</span><span class="modal-skill">Multi-Setup Workholding</span><span class="modal-skill">Toolpath Optimization</span><span class="modal-skill">Feeds &amp; Speeds</span><span class="modal-skill">Surface Finish</span><span class="modal-skill">GD&T</span></div>
+
+            <div class="modal-section">
+                <h3 class="modal-section-title">Overview</h3>
+                <p>The goal was to machine a free-floating ball trapped inside a cube from a solid block of 6061-T6 aluminum (76.2mm / 3 inch cube). It can't be assembled after the fact, so everything has to be cut from solid stock. That means 4 operations per face across 6 faces, and the ball can't break free until the very last cut on the very last face.</p>
+                <img src="ballincube_CAM.png" alt="Fusion360 CAM toolpath simulation" class="inline-img" style="aspect-ratio:16/10;">
+                <p class="img-caption">Fusion360 CAM, adaptive clearing toolpath</p>
+            </div>
+
+            <div class="modal-section">
+                <h3 class="modal-section-title">Process</h3>
+                <p>Each face gets the same sequence: roughing with a 6mm flat end mill for bulk removal, spiral finishing with a 6mm ball nose for the internal sphere surface, edge finishing, and a 0.5mm &#215; 45&#176; chamfer. The trickiest part is workholding. By face 5 you're clamping on finished surfaces, so I printed PETG protective pads for the vise jaws. For the final face, I left a 0.5mm web intact until all operations were done, then carefully broke through by hand.</p>
+                <img src="ballincube_step2.png" alt="Mid-process after roughing" class="inline-img" style="aspect-ratio:16/10;">
+                <p class="img-caption">After roughing, Ra ~3.2&#956;m</p>
+                <img src="ballincube_step3.png" alt="Near completion, 5 faces machined" class="inline-img" style="aspect-ratio:16/10;">
+                <p class="img-caption">5 of 6 faces done</p>
+                <button class="tech-toggle" onclick="toggleTech(this)">Feeds, Speeds &amp; Cutting Forces</button>
+                <div class="tech-content"><div class="tech-content-inner">
+                    <p>Roughing: 8000 RPM, 800 mm/min feed (0.05mm/tooth), 1.5mm stepover, 3mm depth of cut. Finishing: 10,000 RPM, 600 mm/min, 0.2mm stepover for about Ra 1.6&#956;m theoretical.</p>
+                    <div class="calc-block"><span class="calc-label">Cutting Force Check</span>kc (6061-T6) &#8776; 600 N/mm&#178;<br>Fc = 600 &#215; 3 &#215; 1.5 = 2700N<br>Spindle torque = 2700 &#215; 0.003 = 8.1 N&#183;m<br>Haas VF-2 max at 8000 RPM = 26.3 N&#183;m<br><span class="result">31% utilization, well within capability</span></div>
+                </div></div>
+            </div>
+
+            <div class="modal-section">
+                <h3 class="modal-section-title">Results</h3>
+                <img src="ballincube_final.png" alt="Completed ball-in-cube" class="inline-img" style="aspect-ratio:16/10;">
+                <p class="img-caption">Finished piece, hand-sanded to Ra ~0.4&#956;m</p>
+                <div class="spec-grid">
+                    <div class="spec-item"><div class="spec-label">Cube Flatness</div><div class="spec-value">0.08mm (tol &#177;0.1mm)</div></div>
+                    <div class="spec-item"><div class="spec-label">Sphere Diameter</div><div class="spec-value">47.9mm (target 48.0)</div></div>
+                    <div class="spec-item"><div class="spec-label">Min Wall Thickness</div><div class="spec-value">11.2mm</div></div>
+                    <div class="spec-item"><div class="spec-label">Surface Finish</div><div class="spec-value">Ra 0.4&#956;m (sanded)</div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 6: Graduation Gift -->
+    <div id="modal6" class="modal" role="dialog" aria-label="Graduation Gift project details">
+        <button class="modal-close" onclick="closeModal('modal6')" aria-label="Close">&#215;</button>
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2 class="modal-title">Custom Graduation Gift</h2>
+                <p class="modal-subtitle">Design &amp; Fabrication</p>
+                <p class="modal-timeline">Texas Inventionworks senior tradition</p>
+            </div>
+            <div class="modal-skills-bar"><span class="modal-skill">Fusion360</span><span class="modal-skill">Laser Cutting</span><span class="modal-skill">FDM Printing (PETG)</span><span class="modal-skill">Press-Fit Design</span><span class="modal-skill">Multi-Material</span><span class="modal-skill">Tolerance Stackup</span></div>
+
+            <div class="modal-section">
+                <h3 class="modal-section-title">Overview</h3>
+                <p>At Texas Inventionworks, outgoing seniors get a custom gift built by the team. The rule is no adhesives, so the whole thing has to hold together mechanically. I designed a five-layer piece: birch plywood base, then clear, white, and blue acrylic, topped with a PETG accent piece. Everything connects through press-fit tabs.</p>
+                <img src="gradgift_topview.JPEG" alt="Top view of graduation gift" class="inline-img" style="aspect-ratio:16/10;">
+                <p class="img-caption">Top view, 5 material layers</p>
+            </div>
+
+            <div class="modal-section">
+                <h3 class="modal-section-title">Press-Fit Design</h3>
+                <p>The fit had to account for laser kerf (0.15mm for acrylic on the Trotec, 0.12mm for wood). Tabs are 10mm wide, slots are cut at 9.7mm to give about 0.15mm interference after kerf. Each joint takes about 20N of hand pressure to assemble. With 8 joints total that's 160N retention force against the roughly 50N needed to keep it together during handling, so about a 3.2 FOS.</p>
+                <img src="gradgift_frontview.JPEG" alt="Front view showing layered construction" class="inline-img" style="aspect-ratio:16/10;">
+                <p class="img-caption">Front elevation showing press-fit layers</p>
+                <button class="tech-toggle" onclick="toggleTech(this)">Tolerance Stackup</button>
+                <div class="tech-content"><div class="tech-content-inner">
+                    <div class="calc-block"><span class="calc-label">Height Stackup</span>5 layers &#215; 3mm nominal = 15mm<br>Kerf variation: &#177;0.02mm per cut<br>Material thickness: &#177;0.1mm (mfr spec)<br><span class="result">Total: 15mm &#177; 0.5mm, acceptable for aesthetic piece</span></div>
+                </div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 7: Red Cross -->
+    <div id="modal7" class="modal" role="dialog" aria-label="Red Cross Cooling Station project details">
+        <button class="modal-close" onclick="closeModal('modal7')" aria-label="Close">&#215;</button>
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2 class="modal-title">Red Cross Cooling Station</h2>
+                <p class="modal-subtitle">Thermal Analysis Lead, ME 266K Senior Design</p>
+                <p class="modal-timeline">Full semester &#183; IFRC client &#183; CFD &amp; thermal analysis</p>
+            </div>
+            <div class="modal-skills-bar"><span class="modal-skill">SolidWorks Flow Sim</span><span class="modal-skill">CFD</span><span class="modal-skill">Heat Transfer</span><span class="modal-skill">HVAC Sizing</span><span class="modal-skill">Psychrometrics</span><span class="modal-skill">Turbulence Modeling</span><span class="modal-skill">Power Budgeting</span></div>
+
+            <div class="modal-section">
+                <h3 class="modal-section-title">Problem</h3>
+                <p>The International Red Cross needed a rapidly deployable cooling solution for extreme heat events. Think 40&#176;C desert day, 20+ people in a tent, minimal infrastructure. My job was to figure out the thermal loads, size the AC system, and run CFD in SolidWorks to validate that the design would actually keep people below safe temperature thresholds.</p>
+            </div>
+
+            <div class="modal-section">
+                <h3 class="modal-section-title">Thermal Load Breakdown</h3>
+                <p>I calculated every heat source entering the tent envelope individually. The numbers add up fast.</p>
+                <div class="spec-grid">
+                    <div class="spec-item"><div class="spec-label">Conduction (walls/roof)</div><div class="spec-value">1,950 W</div></div>
+                    <div class="spec-item"><div class="spec-label">Solar Radiation (peak)</div><div class="spec-value">6,000 W</div></div>
+                    <div class="spec-item"><div class="spec-label">Occupant Heat (20 people)</div><div class="spec-value">2,000 W</div></div>
+                    <div class="spec-item"><div class="spec-label">Infiltration</div><div class="spec-value">753 W</div></div>
+                    <div class="spec-item"><div class="spec-label">Equipment &amp; Lighting</div><div class="spec-value">500 W</div></div>
+                    <div class="spec-item"><div class="spec-label">Total</div><div class="spec-value">11,203 W &#8776; 38,200 BTU/hr</div></div>
+                </div>
+                <button class="tech-toggle" onclick="toggleTech(this)">Individual Load Calculations</button>
+                <div class="tech-content"><div class="tech-content-inner">
+                    <div class="calc-block"><span class="calc-label">Conduction Through Envelope</span>Tent area: 2(4&#215;2.5) + 2(5&#215;2.5) + 4&#215;5 = 65 m&#178;<br>R = 0.5 m&#178;&#183;K/W (reflective polyester)<br>&#916;T = 40&#176;C &#8722; 25&#176;C = 15 K<br><span class="result">Q = 65 &#215; 15 / 0.5 = 1,950 W</span></div>
+                    <div class="calc-block"><span class="calc-label">Solar Radiation</span>G = 1000 W/m&#178;, Roof = 20 m&#178;, &#945; = 0.30<br><span class="result">Q = 1000 &#215; 20 &#215; 0.30 = 6,000 W peak</span></div>
+                    <div class="calc-block"><span class="calc-label">Occupant Metabolic</span>20 people &#215; 100 W/person (ASHRAE sedentary)<br><span class="result">Q = 2,000 W</span></div>
+                    <div class="calc-block"><span class="calc-label">Infiltration</span>V = 50 m&#179;, ACH = 3<br>Q = &#961;&#183;Cp&#183;V&#775;&#183;&#916;T = 1.2 &#215; 1005 &#215; (150/3600) &#215; 15<br><span class="result">Q = 753 W</span></div>
+                </div></div>
+            </div>
+
+            <div class="modal-section">
+                <h3 class="modal-section-title">CFD Validation</h3>
+                <p>I set up the simulation in SolidWorks Flow Sim with a 250,000 cell tetrahedral mesh, refined to 5cm near the AC vents and occupant zones. Used the k-&#949; turbulence model which is standard for indoor airflow applications. Boundary conditions were 40&#176;C ambient with 2 m/s wind, AC supply at 15&#176;C and 400 CFM.</p>
+                <p>The hot-dry scenario (40&#176;C, 20% RH) came out to 24.5&#176;C average interior temperature, right on target. There's a 5&#176;C stratification from floor to ceiling which is expected. The heat flux through the walls matched my hand calcs almost exactly at 30 W/m&#178;, which was a good sanity check on the simulation setup.</p>
+                <p>The humid scenario (35&#176;C, 80% RH) was more marginal at 26&#176;C average, slightly above the 25&#176;C target. But the wet-bulb temperature came in at 23&#176;C, still safe for prolonged exposure per OSHA guidelines. I added a latent load calculation for 20 people sweating which contributes about 628W of additional moisture-related load.</p>
+                <button class="tech-toggle" onclick="toggleTech(this)">System Sizing &amp; Power</button>
+                <div class="tech-content"><div class="tech-content-inner">
+                    <p>38,200 BTU/hr &#247; 12,000 BTU/ton = 3.2 tons minimum. Went with a 3-ton unit (36,000 BTU/hr), which is about 6% undersized at absolute peak but acceptable since occupants can tolerate brief excursions above 25&#176;C and peak solar is only a few hours per day.</p>
+                    <div class="calc-block"><span class="calc-label">Generator Sizing</span>AC: 3,500W (COP &#8776; 3.0)<br>Lighting + medical + fans: 600W<br>Total: 4,100W + 20% margin = 5 kW min<br><br>5kW diesel @ 75% load: 0.6 gal/hr<br><span class="result">Daily fuel (12hr): 7.2 gal, $7k per station</span></div>
+                    <p>I also analyzed evaporative cooling (effective in dry heat at only 300W draw but useless above 80% RH), passive ventilation (would need over 100&#176;C interior to remove the heat, obviously not viable), and solar+battery ($9,500 vs $3,000 for diesel, better for permanent installations).</p>
+                </div></div>
+            </div>
+
+            <div class="modal-section">
+                <h3 class="modal-section-title">Validated Scenarios</h3>
+                <div class="spec-grid">
+                    <div class="spec-item"><div class="spec-label">Desert Day (40&#176;C, 20% RH)</div><div class="spec-value">24.5&#176;C interior &#10003;</div></div>
+                    <div class="spec-item"><div class="spec-label">Humid Day (35&#176;C, 80% RH)</div><div class="spec-value">26&#176;C / WB 23&#176;C &#10003;</div></div>
+                    <div class="spec-item"><div class="spec-label">Overcast (38&#176;C, 40% RH)</div><div class="spec-value">23&#176;C interior &#10003;</div></div>
+                    <div class="spec-item"><div class="spec-label">Night (25&#176;C)</div><div class="spec-value">22-24&#176;C, 60% power &#10003;</div></div>
+                </div>
+                <p>Final system: 3-ton window AC with a 5kW diesel generator. Capacity for 20 people lying down or about 30 seated. Setup takes 2-3 hours with four people.</p>
+            </div>
+        </div>
+    </div>
+
+    <footer><div class="container"><div class="footer-content">
+        <p class="footer-text mono">&#169; 2026 Alexander Kelly</p>
+        <div class="footer-links">
+            <a href="mailto:alexander.kelly@utexas.edu">Email</a>
+            <a href="https://www.linkedin.com/in/alexander-m-kelly" target="_blank">LinkedIn</a>
+            <a href="resume.pdf" target="_blank">Resume</a>
+        </div>
+    </div></div></footer>
+
+    <script>
+        function openModal(id) {
+            var modal = document.getElementById(id);
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            modal.scrollTop = 0;
+            var closeBtn = modal.querySelector('.modal-close');
+            if (closeBtn) closeBtn.focus();
+        }
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('active');
+            document.body.style.overflow = '';
+        }
+        document.querySelectorAll('.modal').forEach(function(modal) {
+            modal.addEventListener('click', function(e) {
+                if (e.target === this) closeModal(this.id);
+            });
+        });
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.modal.active').forEach(function(m) { closeModal(m.id); });
+            }
+        });
+        function toggleTech(btn) {
+            btn.classList.toggle('open');
+            btn.nextElementSibling.classList.toggle('open');
+        }
+        var observer = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+        document.querySelectorAll('.project-item').forEach(function(item) { observer.observe(item); });
+    </script>
+</body>
+</html>
